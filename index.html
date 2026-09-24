@@ -5,203 +5,219 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Tonspur">
-<meta name="theme-color" content="#eef1f4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0f1318" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f1318">
 <title>Tonspur</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
   :root {
-    color-scheme: light;
-    --ground: #eef1f4;
-    --surface: #ffffff;
-    --ink: #151a22;
-    --muted: #5b6573;
-    --line: #d5dbe3;
-    --accent: #0f6d66;
-    --accent-ink: #ffffff;
-    --accent-soft: #d8ece9;
-    --wave: #9aa6b4;
-    --warn: #8a4b00;
-    --warn-soft: #fbead3;
+    color-scheme: dark;
+    --ground: #0f1318;
+    --surface: #171c23;
+    --ink: #e6ebf1;
+    --muted: #93a0b0;
+    --line: #2a323d;
+    --wave: #4c5868;
+    --accent: #45c2b3;
+    --accent-ink: #06201d;
+    --accent-soft: #15332f;
+    --warn: #f3b76b;
+    --warn-soft: #3a2a14;
     --sans: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      color-scheme: dark;
-      --ground: #0f1318;
-      --surface: #171c23;
-      --ink: #e6ebf1;
-      --muted: #93a0b0;
-      --line: #2a323d;
-      --accent: #45c2b3;
-      --accent-ink: #06201d;
-      --accent-soft: #15332f;
-      --wave: #4c5868;
-      --warn: #f3b76b;
-      --warn-soft: #3a2a14;
-    }
   }
 
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
   body {
     margin: 0;
+    overflow-x: clip;
     background: var(--ground);
     color: var(--ink);
     font: 16px/1.5 var(--sans);
-    padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
-             max(32px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    padding: max(10px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right))
+             0 max(20px, env(safe-area-inset-left));
   }
-  main { max-width: 620px; margin: 0 auto; display: grid; gap: 20px; }
+  main {
+    position: relative;
+    max-width: 620px; margin: 0 auto;
+    display: grid; gap: 22px;
+    padding-bottom: 110px;
+  }
+  main > * { position: relative; }
+  .mono { font-family: var(--mono); font-weight: 500; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:disabled { cursor: default; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  header h1 { margin: 0; font-size: 28px; line-height: 1.1; font-weight: 600; letter-spacing: -0.01em; }
-  header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
-
-  .panel {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 16px;
-    display: grid;
-    gap: 16px;
+  .glow {
+    position: absolute; left: -80px; right: -80px; top: 62px; height: 360px;
+    background: radial-gradient(closest-side, rgba(69, 194, 179, 0.22), rgba(69, 194, 179, 0));
+    pointer-events: none;
   }
 
-  .file {
-    display: flex; align-items: center; gap: 12px;
-    border: 1.5px dashed var(--line); border-radius: 10px;
-    padding: 14px; cursor: pointer; min-height: 64px;
+  /* top bar */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
+  .brand img { width: 32px; height: 32px; border-radius: 9px; display: block; box-shadow: 0 0 0 1px var(--line); }
+  .pill {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 11px; line-height: 1.4; color: var(--accent); white-space: nowrap;
+    border: 1px solid var(--accent-soft); background: rgba(21, 51, 47, 0.6);
+    border-radius: 20px; padding: 5px 10px;
   }
-  .file:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .file input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-  .file .glyph {
-    flex: none; width: 36px; height: 36px; border-radius: 8px;
-    background: var(--accent-soft); color: var(--accent);
+  .pill i { width: 6px; height: 6px; border-radius: 3px; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+
+  /* waveform stage */
+  .stage { display: grid; gap: 14px; padding-top: 6px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .stage input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+  .stage:has(input:disabled) { cursor: default; }
+  .stage:has(input:focus-visible) .wave { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 6px; }
+  .meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 12px; color: var(--muted); }
+  .meta span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .meta span:last-child { white-space: nowrap; }
+  .wave { position: relative; height: 190px; display: flex; align-items: center; gap: 2px; }
+  .wave i { flex: 1; min-width: 0; height: 4%; border-radius: 3px; background: var(--line); transition: background 0.35s, height 0.5s; }
+  .wave.has-file i { background: var(--wave); }
+  .wave.has-file i.done { background: var(--accent); }
+  .empty { position: absolute; inset: 0; display: grid; place-items: center; }
+  .empty > span { display: grid; justify-items: center; gap: 12px; font-size: 15px; font-weight: 500; }
+  .empty b {
+    width: 76px; height: 76px; border-radius: 38px;
+    background: var(--ink); color: var(--ground);
     display: grid; place-items: center;
+    box-shadow: 0 0 0 10px rgba(230, 235, 241, 0.06), 0 0 40px rgba(69, 194, 179, 0.35);
   }
-  .file .name { font-weight: 600; overflow-wrap: anywhere; }
-  .file .meta { color: var(--muted); font-size: 14px; font-family: var(--mono); }
+  .clock { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+  .clock .tc { font-size: 44px; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .clock .tc small { font-size: 16px; color: var(--wave); letter-spacing: 0; }
+  .clock .num { font-size: 12px; color: var(--muted); text-align: right; padding-bottom: 4px; font-variant-numeric: tabular-nums; }
+  .progress { display: grid; gap: 8px; }
+  .track { height: 3px; border-radius: 2px; background: var(--line); overflow: hidden; }
+  .track i { display: block; height: 100%; width: 0; background: var(--accent); box-shadow: 0 0 10px var(--accent); transition: width 0.25s; }
+  .stage-text { font-size: 13px; color: var(--muted); }
 
-  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
-  legend { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; padding: 0; }
-  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--ground); border-radius: 10px; padding: 3px; gap: 3px; }
-  .seg input { position: absolute; opacity: 0; pointer-events: none; }
-  .seg label {
-    text-align: center; padding: 8px 4px; border-radius: 8px; cursor: pointer;
-    font-size: 15px; line-height: 1.25; color: var(--muted);
+  /* settings chips */
+  .settings { display: grid; gap: 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: flex; align-items: baseline; gap: 6px;
+    background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+    border-radius: 12px; padding: 9px 12px; font-size: 14px; font-weight: 500; line-height: 1.5;
   }
-  .seg label small { display: block; font-family: var(--mono); font-size: 12px; }
-  .seg input:checked + label { background: var(--surface); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgb(0 0 0 / 0.12); }
-  .seg input:focus-visible + label { outline: 2px solid var(--accent); }
-
-  .check { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; }
-  .check input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--accent); }
-  .check span small { display: block; color: var(--muted); font-size: 13px; }
-
-  button { font: inherit; }
-  .primary {
-    width: 100%; min-height: 52px; border: 0; border-radius: 12px;
-    background: var(--accent); color: var(--accent-ink); font-weight: 600; font-size: 17px; cursor: pointer;
-  }
-  .primary:disabled { opacity: 0.45; cursor: default; }
-  .primary:focus-visible, .ghost:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-  .ghost {
-    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
-    border-radius: 9px; padding: 7px 14px; cursor: pointer; font-size: 15px;
-  }
-
-  .status { display: grid; gap: 10px; }
-  .status-line { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
-  .status-line .num { font-family: var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .bar { height: 6px; border-radius: 3px; background: var(--ground); overflow: hidden; }
-  .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.25s; }
-  canvas.wave { width: 100%; height: 56px; display: block; }
-
+  .chip small { font-size: 11px; color: var(--muted); }
+  .chip:disabled { opacity: 0.45; }
+  .chips .hint { align-self: center; font-size: 12px; color: var(--wave); }
   .notice { background: var(--warn-soft); color: var(--warn); border-radius: 10px; padding: 10px 12px; font-size: 14px; }
 
-  .transcript-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  .transcript-head h2 { margin: 0; font-size: 18px; }
-  .tag { font-family: var(--mono); font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; }
+  /* transcript */
+  .transcript { display: grid; gap: 14px; border-top: 1px solid var(--line); padding-top: 20px; }
+  .transcript.example { opacity: 0.6; }
+  .transcript-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 33px; }
+  .transcript-head h2 { margin: 0; font-size: 11px; line-height: 1.4; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  .copy { border: 0; background: var(--accent-soft); color: var(--accent); border-radius: 10px; padding: 7px 12px; font-size: 13px; font-weight: 600; line-height: 1.45; }
   .segments { display: grid; gap: 14px; }
-  .segment { display: grid; grid-template-columns: 74px 1fr; gap: 10px; }
-  .segment .tc { font-family: var(--mono); font-size: 13px; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
-  .segment .tc b { display: inline-block; margin-top: 2px; font-weight: 500; color: var(--accent); }
-  .segment p { margin: 0; overflow-wrap: anywhere; }
-  .segment.quiet p { color: var(--muted); font-style: italic; }
-  .example .segments { opacity: 0.6; }
+  .segment { display: grid; gap: 4px; }
+  .segment .tc { font-size: 11px; line-height: 1.4; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .segment p {
+    margin: 0; line-height: 1.45; font-size: 16px; color: var(--muted);
+    text-wrap: pretty; overflow-wrap: anywhere;
+    transition: font-size 0.3s, color 0.3s;
+  }
+  .segment.current p { font-size: 21px; color: var(--ink); }
+  .segment.quiet p { font-style: italic; color: var(--wave); }
 
   footer { color: var(--muted); font-size: 13px; max-width: 62ch; }
   footer p { margin: 0 0 6px; }
 
-  @media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+  /* floating action button */
+  .dock {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1;
+    height: 120px;
+    display: flex; justify-content: center; align-items: flex-end;
+    padding-bottom: max(26px, env(safe-area-inset-bottom));
+    background: linear-gradient(rgba(15, 19, 24, 0), var(--ground) 55%);
+    pointer-events: none;
+  }
+  .fab {
+    position: relative; pointer-events: auto;
+    height: 60px; padding: 0 30px; border: 0; border-radius: 30px;
+    font-size: 17px; font-weight: 600;
+    background: var(--line); color: var(--ink);
+    box-shadow: 0 0 30px rgba(69, 194, 179, 0.35);
+  }
+  .fab.go { background: var(--accent); color: var(--accent-ink); }
+  .fab.stop { background: var(--ink); color: var(--accent-ink); }
+  .fab.stop::before {
+    content: ""; position: absolute; inset: -12px; border-radius: 50%;
+    border: 2px solid var(--accent); pointer-events: none;
+    animation: tsPulse 1.6s ease-out infinite;
+  }
+  .fab:focus-visible { outline-color: var(--ink); }
+  @keyframes tsPulse { 0% { transform: scale(0.9); opacity: 0.9 } 100% { transform: scale(1.35); opacity: 0 } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track i, .wave i, .segment p { transition: none; }
+    .fab.stop::before { animation: none; opacity: 0; }
+  }
 </style>
 </head>
 <body>
 <main>
-  <header>
-    <h1>Tonspur</h1>
-    <p>Turns a video into text, right on your phone. Speech in German, English or a mix of both.</p>
+  <div class="glow" aria-hidden="true"></div>
+
+  <header class="top">
+    <h1 class="brand"><img src="favicon.svg" alt="">Tonspur</h1>
+    <span class="pill mono"><i aria-hidden="true"></i>OFFLINE · ON-DEVICE</span>
   </header>
 
-  <section class="panel" aria-label="Setup">
-    <label class="file" for="file">
-      <input id="file" type="file" accept="video/*,audio/*">
-      <span class="glyph" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="4" width="11" height="12" rx="2"/><path d="M13 8.5l5-2.5v8l-5-2.5"/></svg>
+  <label class="stage" for="file">
+    <input id="file" type="file" accept="video/*,audio/*" aria-label="Choose a video">
+    <span class="meta mono"><span id="file-name">No video yet</span><span id="file-meta">Photos or Files</span></span>
+    <span class="wave" id="wave" aria-hidden="true">
+      <span class="empty" id="empty">
+        <span>
+          <b><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="4" width="11" height="12" rx="2"/><path d="M13 8.5l5-2.5v8l-5-2.5"/></svg></b>
+          Tap to pick a video
+        </span>
       </span>
-      <span>
-        <span class="name" id="file-name">Choose a video</span><br>
-        <span class="meta" id="file-meta">From Photos or Files</span>
-      </span>
-    </label>
+    </span>
+    <span class="clock">
+      <span class="tc mono" id="tc">00:00<small id="tc-total"> / --:--</small></span>
+      <span class="num mono" id="stage-num"></span>
+    </span>
+    <span class="progress">
+      <span class="track"><i id="bar"></i></span>
+      <span class="stage-text" id="stage" role="status">Ready when you are</span>
+    </span>
+  </label>
 
-    <fieldset>
-      <legend>Model</legend>
-      <div class="seg">
-        <input type="radio" name="model" id="m-tiny" value="tiny"><label for="m-tiny">Tiny<small>≈60 MB</small></label>
-        <input type="radio" name="model" id="m-base" value="base" checked><label for="m-base">Base<small>≈135 MB</small></label>
-        <input type="radio" name="model" id="m-small" value="small"><label for="m-small">Small<small>≈250 MB</small></label>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Spoken language</legend>
-      <div class="seg">
-        <input type="radio" name="lang" id="l-auto" value="auto" checked><label for="l-auto">DE + EN<small>per 30 s</small></label>
-        <input type="radio" name="lang" id="l-de" value="de"><label for="l-de">German</label>
-        <input type="radio" name="lang" id="l-en" value="en"><label for="l-en">English</label>
-      </div>
-    </fieldset>
-
-    <label class="check" for="gpu">
-      <input type="checkbox" id="gpu">
-      <span>Use the GPU<small>Faster where it works. Some iPhones fail on it, and Tonspur then switches to the CPU on its own.</small></span>
-    </label>
-
-    <button class="primary" id="start" disabled>Transcribe</button>
-
-    <div class="status" id="status" hidden>
-      <div class="status-line"><span id="stage">Reading the video…</span><span class="num" id="stage-num"></span></div>
-      <div class="bar"><i id="bar"></i></div>
-      <canvas class="wave" id="wave" hidden></canvas>
-      <div class="notice" id="notice" hidden></div>
-      <button class="ghost" id="cancel" hidden>Stop</button>
+  <section class="settings" aria-label="Settings">
+    <div class="chips">
+      <button class="chip" id="chip-model" type="button"></button>
+      <button class="chip" id="chip-lang" type="button"></button>
+      <button class="chip" id="chip-gpu" type="button"></button>
+      <span class="hint">tap to change</span>
     </div>
+    <div class="notice" id="notice" hidden></div>
   </section>
 
-  <section class="panel example" id="result" aria-label="Transcript">
+  <section class="transcript example" id="result" aria-label="Transcript">
     <div class="transcript-head">
-      <h2>Transcript</h2>
-      <span class="tag" id="result-tag">Example</span>
-      <button class="ghost" id="copy" hidden>Copy text</button>
+      <h2 class="mono">Transcript · <span id="result-tag">Example</span></h2>
+      <button class="copy" id="copy" type="button" hidden>Copy text</button>
     </div>
     <div class="segments" id="segments">
-      <div class="segment"><div class="tc">00:00:00<br><b>DE</b></div><p>Okay, kurzer Rundgang durch die neue Werkstatt. Links die Drehbank, die haben wir letzte Woche endlich angeschlossen.</p></div>
-      <div class="segment"><div class="tc">00:00:27<br><b>EN</b></div><p>And for the folks watching from the Austin team: this is the fixture we talked about on Monday's call.</p></div>
-      <div class="segment"><div class="tc">00:00:55<br><b>DE</b></div><p>Die Spannvorrichtung hält jetzt bis zu vier Teile gleichzeitig, das spart uns pro Schicht locker eine Stunde.</p></div>
+      <div class="segment current"><div class="tc mono">00:00:00 · DE</div><p>Okay, kurzer Rundgang durch die neue Werkstatt. Links die Drehbank, die haben wir letzte Woche endlich angeschlossen.</p></div>
+      <div class="segment"><div class="tc mono">00:00:27 · EN</div><p>And for the folks watching from the Austin team: this is the fixture we talked about on Monday's call.</p></div>
+      <div class="segment"><div class="tc mono">00:00:55 · DE</div><p>Die Spannvorrichtung hält jetzt bis zu vier Teile gleichzeitig, das spart uns pro Schicht locker eine Stunde.</p></div>
     </div>
   </section>
 
@@ -212,13 +228,19 @@
   </footer>
 </main>
 
+<div class="dock">
+  <button class="fab" id="start" type="button">Choose a video</button>
+</div>
+
 <script type="module">
 const SR = 16000;
+const BARS = 60;
 const $ = (id) => document.getElementById(id);
 const els = {
   file: $('file'), fileName: $('file-name'), fileMeta: $('file-meta'),
-  start: $('start'), status: $('status'), stage: $('stage'), stageNum: $('stage-num'),
-  bar: $('bar'), wave: $('wave'), notice: $('notice'), cancel: $('cancel'),
+  wave: $('wave'), empty: $('empty'), tc: $('tc'), tcTotal: $('tc-total'),
+  start: $('start'), stage: $('stage'), stageNum: $('stage-num'), bar: $('bar'), notice: $('notice'),
+  chipModel: $('chip-model'), chipLang: $('chip-lang'), chipGpu: $('chip-gpu'),
   result: $('result'), resultTag: $('result-tag'), segments: $('segments'), copy: $('copy'),
 };
 
@@ -227,28 +249,55 @@ const store = {
   get(k) { try { return localStorage.getItem('tonspur.' + k); } catch { return null; } },
   set(k, v) { try { localStorage.setItem('tonspur.' + k, v); } catch {} },
 };
-for (const name of ['model', 'lang']) {
-  const saved = store.get(name);
-  const input = saved && document.querySelector(`input[name="${name}"][value="${saved}"]`);
-  if (input) input.checked = true;
-  document.querySelectorAll(`input[name="${name}"]`).forEach((el) =>
-    el.addEventListener('change', () => store.set(name, el.value)));
-}
-els.gpu = $('gpu');
-els.gpu.checked = store.get('gpu') === '1';
-els.gpu.addEventListener('change', () => store.set('gpu', els.gpu.checked ? '1' : '0'));
-if (!('gpu' in navigator)) {
-  els.gpu.checked = false;
-  els.gpu.disabled = true;
-}
+const MODELS = { tiny: ['Tiny', '≈60 MB'], base: ['Base', '≈135 MB'], small: ['Small', '≈250 MB'] };
+const LANGS = { auto: 'DE + EN', de: 'German', en: 'English' };
+const hasGpu = 'gpu' in navigator;
+const settings = {
+  model: store.get('model') in MODELS ? store.get('model') : 'base',
+  lang: store.get('lang') in LANGS ? store.get('lang') : 'auto',
+  gpu: hasGpu && store.get('gpu') === '1',
+};
+const setting = (name) => settings[name];
 
-const setting = (name) => document.querySelector(`input[name="${name}"]:checked`).value;
+function renderChips() {
+  const [name, size] = MODELS[settings.model];
+  const small = document.createElement('small');
+  small.className = 'mono';
+  small.textContent = size;
+  els.chipModel.replaceChildren(name, small);
+  els.chipModel.setAttribute('aria-label', `Model: ${name}, ${size}`);
+  els.chipLang.textContent = LANGS[settings.lang];
+  els.chipLang.setAttribute('aria-label', `Spoken language: ${LANGS[settings.lang]}`);
+  els.chipGpu.textContent = settings.gpu ? 'GPU' : 'CPU';
+  els.chipGpu.setAttribute('aria-label', `Runs on the ${settings.gpu ? 'GPU' : 'CPU'}`);
+}
+const cycle = (name, list) => () => {
+  settings[name] = list[(list.indexOf(settings[name]) + 1) % list.length];
+  store.set(name, settings[name]);
+  renderChips();
+};
+els.chipModel.addEventListener('click', cycle('model', Object.keys(MODELS)));
+els.chipLang.addEventListener('click', cycle('lang', Object.keys(LANGS)));
+els.chipGpu.addEventListener('click', () => {
+  settings.gpu = !settings.gpu;
+  store.set('gpu', settings.gpu ? '1' : '0');
+  renderChips();
+});
+els.chipGpu.disabled = !hasGpu;
+if (!hasGpu) els.chipGpu.title = 'This browser has no WebGPU';
+renderChips();
 
 // ---- helpers ---------------------------------------------------------------
 const mb = (bytes) => (bytes / 1e6).toFixed(bytes < 1e8 ? 1 : 0) + ' MB';
 const timecode = (s) => {
   const t = Math.floor(s);
   return [Math.floor(t / 3600), Math.floor(t / 60) % 60, t % 60].map((n) => String(n).padStart(2, '0')).join(':');
+};
+// MM:SS for the big clock; hours only show up when there are any.
+const clock = (s) => {
+  const t = Math.floor(s);
+  const mmss = [Math.floor(t / 60) % 60, t % 60].map((n) => String(n).padStart(2, '0')).join(':');
+  return t >= 3600 ? `${Math.floor(t / 3600)}:${mmss}` : mmss;
 };
 const duration = (s) => {
   if (!isFinite(s)) return '';
@@ -261,18 +310,43 @@ function showNotice(text) {
   els.notice.hidden = !text;
 }
 
+function setClock(done, total) {
+  els.tc.firstChild.nodeValue = clock(done);
+  els.tcTotal.textContent = ` / ${total == null ? '--:--' : clock(total)}`;
+}
+
+// ---- main button -------------------------------------------------------------
+// idle: no file yet · ready: file chosen · running · again: a run has finished
+let phase = 'idle';
+function setPhase(next) {
+  phase = next;
+  const [label, look] = {
+    idle: ['Choose a video', ''],
+    ready: ['Transcribe', 'go'],
+    running: ['Stop', 'stop'],
+    again: ['Run again', 'go'],
+  }[phase];
+  els.start.textContent = label;
+  els.start.className = 'fab ' + look;
+}
+
 // ---- file selection ------------------------------------------------------
 let file = null;
 els.file.addEventListener('change', () => {
   file = els.file.files[0] ?? null;
-  els.start.disabled = !file;
   if (!file) return;
+  setPhase('ready');
   els.fileName.textContent = file.name;
   els.fileMeta.textContent = mb(file.size);
+  peaks = null;
+  chunkState = [];
+  drawWave();
+  setClock(0, null);
+  els.bar.style.width = '0%';
+  els.stage.textContent = 'Ready when you are';
+  els.stageNum.textContent = '';
   // Safari has to hold the whole file and its decoded audio in memory at once.
   if (file.size > 1e9) {
-    els.status.hidden = false;
-    els.stage.textContent = 'Ready';
     showNotice('This is a big video. Safari may run out of memory and reload the page. If it does, trim the video in Photos first, or export it at a lower resolution.');
   } else {
     showNotice('');
@@ -358,7 +432,6 @@ function planChunks(audio) {
 // ---- waveform ----------------------------------------------------------------
 let peaks = null;
 let chunkState = [];
-let lastWave = null;
 
 function computePeaks(audio, buckets) {
   const out = new Float32Array(buckets);
@@ -376,51 +449,33 @@ function computePeaks(audio, buckets) {
   return out;
 }
 
-function drawWave(chunks, total) {
-  const canvas = els.wave;
-  const dpr = window.devicePixelRatio || 1;
-  const w = canvas.clientWidth;
-  const h = canvas.clientHeight;
-  lastWave = [chunks, total];
-  if (!w || !peaks) return;
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  const g = canvas.getContext('2d');
-  g.scale(dpr, dpr);
-  const css = getComputedStyle(document.documentElement);
-  const colors = {
-    todo: css.getPropertyValue('--wave').trim(),
-    done: css.getPropertyValue('--accent').trim(),
-    line: css.getPropertyValue('--line').trim(),
-  };
-  const bar = w / peaks.length;
-  for (let b = 0; b < peaks.length; b++) {
-    const t = ((b + 0.5) / peaks.length) * total;
+const bars = Array.from({ length: BARS }, () => document.createElement('i'));
+els.wave.prepend(...bars);
+
+// Without peaks (no file, or not decoded yet) the bars lie flat at 4%. A bar
+// turns teal once the part its middle falls into has been transcribed.
+function drawWave(chunks = [], total = 0) {
+  els.wave.classList.toggle('has-file', !!file);
+  els.empty.hidden = !!file;
+  bars.forEach((bar, b) => {
+    bar.style.height = peaks ? `${Math.max(4, Math.round(peaks[b] * 100))}%` : '4%';
+    const t = ((b + 0.5) / BARS) * total;
     const idx = chunks.findIndex((c) => t * SR < c.end);
-    g.fillStyle = chunkState[idx] ? colors.done : colors.todo;
-    const bh = Math.max(1.5, peaks[b] * (h - 4));
-    g.fillRect(b * bar + 0.5, (h - bh) / 2, Math.max(1, bar - 1), bh);
-  }
-  // Mark where each chunk was cut.
-  g.fillStyle = colors.line;
-  for (const c of chunks.slice(0, -1)) g.fillRect((c.end / SR / total) * w, 0, 1, h);
+    bar.classList.toggle('done', !!(peaks && chunkState[idx]));
+  });
 }
+drawWave();
 
 // ---- transcript ------------------------------------------------------------
 let segments = [];
 
 function renderSegment(seg) {
+  els.segments.querySelector('.current')?.classList.remove('current');
   const row = document.createElement('div');
-  row.className = 'segment' + (seg.text ? '' : ' quiet');
+  row.className = 'segment current' + (seg.text ? '' : ' quiet');
   const tc = document.createElement('div');
-  tc.className = 'tc';
-  tc.textContent = timecode(seg.start);
-  if (seg.lang) {
-    tc.append(document.createElement('br'));
-    const b = document.createElement('b');
-    b.textContent = seg.lang.toUpperCase();
-    tc.append(b);
-  }
+  tc.className = 'tc mono';
+  tc.textContent = timecode(seg.start) + (seg.lang ? ` · ${seg.lang.toUpperCase()}` : '');
   const p = document.createElement('p');
   p.textContent = seg.text || 'No speech';
   row.append(tc, p);
@@ -435,7 +490,7 @@ els.copy.addEventListener('click', async () => {
   const text = plainText();
   try {
     await navigator.clipboard.writeText(text);
-    els.copy.textContent = 'Copied';
+    els.copy.textContent = 'Copied ✓';
   } catch {
     const range = document.createRange();
     range.selectNodeContents(els.segments);
@@ -450,6 +505,7 @@ els.copy.addEventListener('click', async () => {
 // ---- run -------------------------------------------------------------------
 let worker = null;
 let wakeLock = null;
+let stopRequested = false;
 
 async function holdScreen(on) {
   try {
@@ -462,24 +518,32 @@ document.addEventListener('visibilitychange', () => {
 });
 
 function setBusy(busy) {
-  els.start.disabled = busy || !file;
   els.file.disabled = busy;
-  els.cancel.hidden = !busy;
-  document.querySelectorAll('fieldset input, #gpu').forEach((el) => (el.disabled = busy || (el.id === 'gpu' && !('gpu' in navigator))));
+  els.chipModel.disabled = els.chipLang.disabled = busy;
+  els.chipGpu.disabled = busy || !hasGpu;
 }
 
-els.cancel.addEventListener('click', () => {
+function stop() {
+  stopRequested = true;
   worker?.postMessage({ type: 'cancel' });
   els.stage.textContent = 'Stopping after this part…';
+}
+
+els.start.addEventListener('click', () => {
+  if (phase === 'idle') els.file.click();
+  else if (phase === 'running') stop();
+  else run();
 });
 
-els.start.addEventListener('click', async () => {
+async function run() {
   if (!file) return;
+  stopRequested = false;
   setBusy(true);
+  setPhase('running');
   holdScreen(true);
-  els.status.hidden = false;
-  els.wave.hidden = true;
   showNotice('');
+  chunkState = [];
+  drawWave();
   els.bar.style.width = '0%';
   els.stage.textContent = 'Reading the video…';
   els.stageNum.textContent = '';
@@ -491,6 +555,7 @@ els.start.addEventListener('click', async () => {
     els.stage.textContent = 'Could not read the sound from this video';
     showNotice('Safari could not decode this file\'s audio track. Try exporting it again from Photos, or share the video as an audio file (for example .m4a).');
     setBusy(false);
+    setPhase('ready');
     holdScreen(false);
     return;
   }
@@ -498,18 +563,18 @@ els.start.addEventListener('click', async () => {
   const total = audio.length / SR;
   const chunks = planChunks(audio);
   const speaking = chunks.filter((c) => !c.silent).length;
-  peaks = computePeaks(audio, 160);
+  peaks = computePeaks(audio, BARS);
   chunkState = [];
-  els.wave.hidden = false;
   drawWave(chunks, total);
+  els.fileMeta.textContent = `${mb(file.size)} · ${clock(total)}`;
+  setClock(0, total);
 
   segments = [];
   els.segments.replaceChildren();
   els.result.classList.remove('example');
-  els.resultTag.hidden = true;
+  els.resultTag.textContent = `0/${chunks.length}`;
   els.copy.hidden = true;
 
-  worker ??= new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
   const started = performance.now();
   let spentMs = 0;
   let doneSpeaking = 0;
@@ -519,8 +584,17 @@ els.start.addEventListener('click', async () => {
     els.stageNum.textContent = '';
     els.copy.hidden = !plainText();
     setBusy(false);
+    setPhase('again');
     holdScreen(false);
   };
+
+  // Stop was tapped while the video was still being read.
+  if (stopRequested) {
+    finish('Stopped');
+    return;
+  }
+
+  worker ??= new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
 
   worker.onmessage = ({ data }) => {
     switch (data.type) {
@@ -528,12 +602,13 @@ els.start.addEventListener('click', async () => {
         if (data.stage === 'loading') {
           els.stage.textContent = 'Loading the speech model…';
         } else {
-          els.stage.textContent = `Transcribing ${duration(total)} of audio`;
+          els.stage.textContent = `Listening · part 1 of ${chunks.length}`;
+          els.stageNum.textContent = '';
           els.bar.style.width = '0%';
         }
         break;
       case 'download':
-        els.stage.textContent = 'Downloading the speech model (only the first time)';
+        els.stage.textContent = 'Downloading model · first time only';
         els.stageNum.textContent = `${mb(data.loaded)} / ${mb(data.total)}`;
         els.bar.style.width = `${(100 * data.loaded) / data.total}%`;
         break;
@@ -545,11 +620,16 @@ els.start.addEventListener('click', async () => {
         renderSegment(data);
         chunkState[data.index] = true;
         drawWave(chunks, total);
+        setClock(data.end, total);
+        els.resultTag.textContent = `${data.index + 1}/${chunks.length}`;
         if (data.text || data.lang) { doneSpeaking++; spentMs += data.ms; }
         const left = speaking - doneSpeaking;
         const eta = doneSpeaking ? (spentMs / doneSpeaking) * left / 1000 : NaN;
         els.bar.style.width = `${(100 * (data.index + 1)) / chunks.length}%`;
         els.stageNum.textContent = left > 0 && isFinite(eta) ? `≈${duration(eta)} left` : '';
+        if (data.index + 1 < chunks.length && !stopRequested) {
+          els.stage.textContent = `Listening · part ${data.index + 2} of ${chunks.length}`;
+        }
         els.copy.hidden = !plainText();
         break;
       }
@@ -568,14 +648,12 @@ els.start.addEventListener('click', async () => {
     }
   };
 
-  const device = els.gpu.checked ? 'webgpu' : 'wasm';
+  const device = settings.gpu ? 'webgpu' : 'wasm';
   worker.postMessage(
     { type: 'run', audio, chunks, model: setting('model'), language: setting('lang'), device },
     [audio.buffer],
   );
-});
-
-addEventListener('resize', () => { if (lastWave && !els.wave.hidden) drawWave(...lastWave); });
+}
 </script>
 </body>
 </html>
